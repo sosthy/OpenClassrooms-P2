@@ -1,0 +1,11 @@
+.tooltip-val {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    .medal-count {
+        font-size: 1.3rem;
+        margin: 0;
+        padding-top: 4px;
+    }
+}

@@ -1,7 +1,9 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
+import { Component, EventEmitter, OnInit, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { Color, escapeLabel, formatLabel, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
 import { flatMap, map, Observable, of, shareReplay, take, tap } from 'rxjs';
-import Olympic from 'src/app/core/models/Olympic';
+import { HeaderItem } from 'src/app/core/models/HeaderItem';
+import { Olympic } from 'src/app/core/models/Olympic';
 import OlympicChartData from 'src/app/core/models/OlympicChartData';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 
@@ -12,45 +14,60 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
 })
 export class HomeComponent implements OnInit 
 {
-  olympics$: Observable<Array<OlympicChartData>> = of();
-  view: [number, number] = [700, 400];
+  olympics$: Observable<Olympic[]> = of();
+  title: string = 'Medals per Country';
+  items: HeaderItem[] = [
+    {
+      title: 'Number of JOs',
+      value: 10
+    },
+    {
+      title: 'Number of countries',
+      value: 10
+    },
+  ]
 
   // options
-  gradient: boolean = true;
+  gradient: boolean = false;
   showLegend: boolean = false;
   showLabels: boolean = true;
   isDoughnut: boolean = false;
+  trimLabels: boolean = false;
   legendPosition: LegendPosition = LegendPosition.Below;
+  label: string = "";
+  val: string = "";
 
   colorScheme: string | Color = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#000EFD'],
+    domain: ['#8B6565', '#BDCAE5', '#90A0D6', '#6F4451', '#92829F'],
     name: '',
     selectable: true,
     group: ScaleType.Linear
   };
 
-  constructor(private olympicService: OlympicService) {
-    this.olympics$ = this.olympicService.loadInitialData().pipe(take(1), map(this.olympicMap));
+  constructor(private olympicService: OlympicService, private router: Router) {
+    this.olympics$ = this.olympicService.getOlympics().pipe(map(this.olympicMap));
   }
 
   ngOnInit(): void {}
 
-  olympicMap(olympics: Array<Olympic>) {
+  olympicMap(olympics: Olympic[]) {
     return olympics.map(olympic => {      
       const medalsCount = olympic.participations.reduce((acc, current) => acc + current.medalsCount, 0);
-      return { name: olympic.country, value: medalsCount};
+      return { ...olympic, name: olympic.country, value: medalsCount };
     });    
   }
 
   onSelect(data: EventEmitter<any>): void {
-    // console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    this.router.navigate(['/detail', data.name.toLocaleLowerCase()]);
   }
 
-  onActivate(data: EventEmitter<any>): void {
-    // console.log('Activate', JSON.parse(JSON.stringify(data)));
-  }
+  tooltipText(myArc: any): string {
+    this.label = formatLabel(myArc.data.name);
+    this.val = formatLabel(myArc.data.value);
 
-  onDeactivate(data: EventEmitter<any>): void {
-    // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    return `
+      <span class="tooltip-label">${escapeLabel(this.label)}</span>
+      <span class="tooltip-val">${this.val}</span>
+    `;
   }
 }

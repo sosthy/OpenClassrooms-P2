@@ -1,0 +1,28 @@
+@if (olympic$ | async; as olympic)
+{
+    <app-header [title]="olympic.country" [items]="items" />
+
+    <app-chart-wrapper>
+        <ng-template #chartTemplate>
+            <ngx-charts-line-chart
+                [scheme]="colorScheme"
+                [legend]="legend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [yScaleMin]="0"
+                [xAxis]="xAxis"
+                [yAxis]="yAxis"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [timeline]="timeline"
+                [results]="multi"
+                >
+            </ngx-charts-line-chart>
+        </ng-template>
+    </app-chart-wrapper>
+}
+
+<div class="center">
+    {{ (olympic$ | async)?.country ? '' : redirect() }}
+    <a routerLink="">Go back</a>
+</div>

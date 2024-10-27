@@ -1,1 +1,72 @@
+$tooltip-bg: rgba(66, 127, 141);
+$tooltip-color: #fff;
+$tooltip-caret-bg: $tooltip-bg;
+$tooltip-border: transparent;
+$tooltip-spacing: 10px;
+
 /* You can add global styles to this file, and also import other style files */
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.montserrat-regular {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.montserrat-bold {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.tooltip-inner {
+    background-color: #427F8D !important;
+}
+
+.tooltip-arrow {
+    background-color: #427F8D !important;
+}
+
+.type-tooltip {
+    color: $tooltip-color !important;
+    background: $tooltip-bg !important;
+
+    .tooltip-caret {
+        &.position-left {
+          border-top: 7px solid transparent;
+          border-bottom: 7px solid transparent;
+          border-left: 7px solid $tooltip-caret-bg !important;
+        }
+  
+        &.position-top {
+          border-left: 7px solid transparent;
+          border-right: 7px solid transparent;
+          border-top: 7px solid $tooltip-caret-bg !important;
+        }
+  
+        &.position-right {
+          border-top: 7px solid transparent;
+          border-bottom: 7px solid transparent;
+          border-right: 7px solid $tooltip-caret-bg !important;
+        }
+  
+        &.position-bottom {
+          border-left: 7px solid transparent;
+          border-right: 7px solid transparent;
+          border-bottom: 7px solid $tooltip-caret-bg !important;
+        }
+      }
+}
