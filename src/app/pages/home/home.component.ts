@@ -61,13 +61,4 @@ export class HomeComponent implements OnInit
     this.router.navigate(['/detail', data.name.toLocaleLowerCase()]);
   }
 
-  tooltipText(myArc: any): string {
-    this.label = formatLabel(myArc.data.name);
-    this.val = formatLabel(myArc.data.value);
-
-    return `
-      <span class="tooltip-label">${escapeLabel(this.label)}</span>
-      <span class="tooltip-val">${this.val}</span>
-    `;
-  }
 }
